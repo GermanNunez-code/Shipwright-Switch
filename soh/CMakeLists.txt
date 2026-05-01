@@ -524,7 +524,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:
-                -Wno-c++11-narrowing
                 -Wno-deprecated-enum-enum-conversion
             >
             -pthread
@@ -552,7 +551,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
             >
             $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
             $<$<COMPILE_LANGUAGE:CXX>:
-                -Wno-c++11-narrowing
                 -Wno-deprecated-enum-enum-conversion
             >
             -pthread
