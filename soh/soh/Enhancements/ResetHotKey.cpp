@@ -3,6 +3,7 @@
 #include "soh/ShipInit.hpp"
 #include "functions.h"
 #include "soh/OTRGlobals.h"
+#include "soh/SohGui/SohGui.hpp"
 
 extern "C" {
 #include "z64.h"
@@ -22,7 +23,7 @@ static void OnGameStateMainStartResetHotkey() {
         CHECK_BTN_ALL(gGameState->input[0].cur.button, mask)) {
 
         auto consoleWin = std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"));
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow(SohGui::GuiWindowNames::ConsoleLookup));
 
         if (consoleWin) {
             consoleWin->Dispatch("reset");

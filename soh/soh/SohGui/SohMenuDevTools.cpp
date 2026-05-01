@@ -32,16 +32,16 @@ static const std::map<int32_t, const char*> debugSaveFileModes = {
 
 void SohMenu::AddMenuDevTools() {
     // Add Dev Tools Menu
-    AddMenuEntry("Dev Tools", CVAR_SETTING("Menu.DevToolsSidebarSection"));
+    AddMenuEntry(SohGuiStrings::SidebarSections::DevTools, CVAR_SETTING("Menu.DevToolsSidebarSection"));
 
     // General
-    AddSidebarEntry("Dev Tools", "General", 3);
-    WidgetPath path = { "Dev Tools", "General", SECTION_COLUMN_1 };
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, SohGuiStrings::SidebarEntryNames::Common::General, 3);
+    WidgetPath path = { SohGuiStrings::SidebarSections::DevTools, SohGuiStrings::SidebarEntryNames::Common::General, SECTION_COLUMN_1 };
 
     AddWidget(path, "Popout Menu", WIDGET_CVAR_CHECKBOX)
         .CVar("gSettings.Menu.Popout")
         .Options(CheckboxOptions().Tooltip("Changes the menu display from overlay to windowed."));
-    AddWidget(path, "Debug Mode", WIDGET_CVAR_CHECKBOX)
+    AddWidget(path, "Modo debug", WIDGET_CVAR_CHECKBOX)
         .CVar(CVAR_DEVELOPER_TOOLS("DebugEnabled"))
         .Options(
             CheckboxOptions().Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip "
@@ -139,93 +139,93 @@ void SohMenu::AddMenuDevTools() {
     AddWidget(path, "Warp Points", WIDGET_CUSTOM).CustomFunction(WarpPointsWidget).HideInSearch(true);
 
     // Stats
-    path.sidebarName = "Stats";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::Stats;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 1);
     AddWidget(path, "Popout Stats Window", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("SohStats"))
         .RaceDisable(false)
-        .WindowName("Stats##Soh")
+        .WindowName(SohGuiStrings::WindowNames::Stats)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Stats Window."));
 
     // Console
-    path.sidebarName = "Console";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
-    AddWidget(path, "Popout Console", WIDGET_WINDOW_BUTTON)
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::Console;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 1);
+    AddWidget(path, "Abrir Consola en ventana", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("SohConsole"))
-        .WindowName("Console##SoH")
+        .WindowName(SohGuiStrings::WindowNames::Console)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Console Window."));
 
     // Save Editor
-    path.sidebarName = "Save Editor";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
-    AddWidget(path, "Popout Save Editor", WIDGET_WINDOW_BUTTON)
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::SaveEditor;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 1);
+    AddWidget(path, "Abrir Editor de guardado en ventana", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("SaveEditor"))
-        .WindowName("Save Editor")
+        .WindowName(SohGuiStrings::WindowNames::SaveEditor)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Save Editor Window."));
 
     // Hook Debugger
-    path.sidebarName = "Hook Debugger";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
-    AddWidget(path, "Popout Hook Debugger", WIDGET_WINDOW_BUTTON)
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::HookDebugger;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 1);
+    AddWidget(path, "Abrir Hook Debugger en ventana", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("HookDebugger"))
-        .WindowName("Hook Debugger")
+        .WindowName(SohGuiStrings::WindowNames::HookDebugger)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Hook Debugger Window."));
 
     // Collision Viewer
-    path.sidebarName = "Collision Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
-    AddWidget(path, "Popout Collision Viewer", WIDGET_WINDOW_BUTTON)
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::CollisionViewer;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 2);
+    AddWidget(path, "Abrir Visor de colisiones en ventana", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("CollisionViewer"))
-        .WindowName("Collision Viewer")
+        .WindowName(SohGuiStrings::WindowNames::CollisionViewer)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Collision Viewer Window."));
 
     // Actor Viewer
-    path.sidebarName = "Actor Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
-    AddWidget(path, "Popout Actor Viewer", WIDGET_WINDOW_BUTTON)
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::ActorViewer;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 2);
+    AddWidget(path, "Abrir Visor de actores en ventana", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ActorViewer"))
-        .WindowName("Actor Viewer")
+        .WindowName(SohGuiStrings::WindowNames::ActorViewer)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Actor Viewer Window."));
 
     // Display List Viewer
-    path.sidebarName = "DList Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
-    AddWidget(path, "Popout Display List Viewer", WIDGET_WINDOW_BUTTON)
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::DListViewer;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 2);
+    AddWidget(path, "Abrir Visor de Display Lists en ventana", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("DisplayListViewer"))
-        .WindowName("Display List Viewer")
+        .WindowName(SohGuiStrings::WindowNames::DisplayListViewer)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Display List Viewer Window."));
 
     // Value Viewer
-    path.sidebarName = "Value Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::ValueViewer;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 2);
     AddWidget(path, "Popout Value Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("ValueViewer"))
-        .WindowName("Value Viewer")
+        .WindowName(SohGuiStrings::WindowNames::ValueViewer)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Value Viewer Window."));
 
     // Message Viewer
-    path.sidebarName = "Message Viewer";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 2);
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::MessageViewer;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 2);
     AddWidget(path, "Popout Message Viewer", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("MessageViewer"))
-        .WindowName("Message Viewer")
+        .WindowName(SohGuiStrings::WindowNames::MessageViewer)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Message Viewer Window."));
 
     // Gfx Debugger
-    path.sidebarName = "Gfx Debugger";
-    AddSidebarEntry("Dev Tools", path.sidebarName, 1);
+    path.sidebarName = SohGuiStrings::SidebarEntryNames::DevTools::GfxDebugger;
+    AddSidebarEntry(SohGuiStrings::SidebarSections::DevTools, path.sidebarName, 1);
     AddWidget(path, "Popout Gfx Debugger", WIDGET_WINDOW_BUTTON)
         .CVar(CVAR_WINDOW("SohGfxDebugger"))
-        .WindowName("GfxDebugger##SoH")
+        .WindowName(SohGuiStrings::WindowNames::GfxDebugger)
         .HideInSearch(true)
         .Options(WindowButtonOptions().Tooltip("Enables the separate Gfx Debugger Window."));
 }

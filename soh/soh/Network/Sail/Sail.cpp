@@ -3,6 +3,7 @@
 #include <libultraship/libultraship.h>
 #include <nlohmann/json.hpp>
 #include "soh/OTRGlobals.h"
+#include "soh/SohGui/SohGui.hpp"
 #include "soh/util.h"
 
 template <class DstType, class SrcType> bool IsType(const SrcType* src) {
@@ -55,7 +56,7 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
 
             std::string command = payload["command"].get<std::string>();
             std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow(SohGui::GuiWindowNames::ConsoleLookup))
                 ->Dispatch(command);
             responsePayload["status"] = "success";
             SendJsonToRemote(responsePayload);
@@ -79,7 +80,8 @@ void Sail::OnIncomingJson(nlohmann::json payload) {
 
                 std::string command = payload["effect"]["command"].get<std::string>();
                 std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+                    Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow(
+                        SohGui::GuiWindowNames::ConsoleLookup))
                     ->Dispatch(command);
                 responsePayload["status"] = "success";
                 SendJsonToRemote(responsePayload);

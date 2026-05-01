@@ -1,6 +1,7 @@
 #include "Menu.h"
 #include "UIWidgets.hpp"
 #include "soh/OTRGlobals.h"
+#include "SohGui.hpp"
 #include <ship/window/gui/GuiMenuBar.h>
 #include <ship/window/gui/GuiElement.h>
 #include "SohModals.h"
@@ -72,30 +73,35 @@ uint32_t GetVectorIndexOf(std::vector<std::string>& vector, std::string value) {
 static bool raceDisableActive = false;
 
 void Menu::InsertSidebarSearch() {
-    menuEntries["Settings"].sidebars.emplace("Search", searchSidebarEntry);
+    const std::string settingsSection = SohGui::SohGuiStrings::SidebarSections::Settings;
+    menuEntries[settingsSection].sidebars.emplace("Search", searchSidebarEntry);
     uint32_t curIndex = 0;
-    if (!Ship_IsCStringEmpty(CVarGetString(menuEntries["Settings"].sidebarCvar, ""))) {
-        curIndex = GetVectorIndexOf(menuEntries["Settings"].sidebarOrder,
-                                    CVarGetString(menuEntries["Settings"].sidebarCvar, ""));
+    if (!Ship_IsCStringEmpty(CVarGetString(menuEntries[settingsSection].sidebarCvar, ""))) {
+        curIndex = GetVectorIndexOf(menuEntries[settingsSection].sidebarOrder,
+                                    CVarGetString(menuEntries[settingsSection].sidebarCvar, ""));
     }
-    menuEntries["Settings"].sidebarOrder.insert(menuEntries["Settings"].sidebarOrder.begin() + searchSidebarIndex,
-                                                "Search");
+    menuEntries[settingsSection].sidebarOrder.insert(menuEntries[settingsSection].sidebarOrder.begin() + searchSidebarIndex,
+                                                     "Search");
     if (curIndex > searchSidebarIndex) {
-        CVarSetString(menuEntries["Settings"].sidebarCvar, menuEntries["Settings"].sidebarOrder.at(curIndex).c_str());
+        CVarSetString(menuEntries[settingsSection].sidebarCvar,
+                      menuEntries[settingsSection].sidebarOrder.at(curIndex).c_str());
     }
 }
 
 void Menu::RemoveSidebarSearch() {
-    uint32_t curIndex = GetVectorIndexOf(menuEntries["Settings"].sidebarOrder,
-                                         CVarGetString(menuEntries["Settings"].sidebarCvar, "General"));
-    menuEntries["Settings"].sidebars.erase("Search");
-    std::erase_if(menuEntries["Settings"].sidebarOrder, [](std::string& name) { return name == "Search"; });
+    const std::string settingsSection = SohGui::SohGuiStrings::SidebarSections::Settings;
+    uint32_t curIndex = GetVectorIndexOf(menuEntries[settingsSection].sidebarOrder,
+                                         CVarGetString(menuEntries[settingsSection].sidebarCvar,
+                                                       SohGui::SohGuiStrings::SidebarEntryNames::Common::General));
+    menuEntries[settingsSection].sidebars.erase("Search");
+    std::erase_if(menuEntries[settingsSection].sidebarOrder, [](std::string& name) { return name == "Search"; });
     if (curIndex > searchSidebarIndex) {
         curIndex--;
-    } else if (curIndex >= menuEntries["Settings"].sidebarOrder.size()) {
-        curIndex = menuEntries["Settings"].sidebarOrder.size() - 1;
+    } else if (curIndex >= menuEntries[settingsSection].sidebarOrder.size()) {
+        curIndex = menuEntries[settingsSection].sidebarOrder.size() - 1;
     }
-    CVarSetString(menuEntries["Settings"].sidebarCvar, menuEntries["Settings"].sidebarOrder.at(curIndex).c_str());
+    CVarSetString(menuEntries[settingsSection].sidebarCvar,
+                  menuEntries[settingsSection].sidebarOrder.at(curIndex).c_str());
 }
 
 void Menu::UpdateWindowBackendObjects() {
@@ -342,7 +348,7 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                 options.tooltip = "Sets the audio API used by the game. Requires a relaunch to take effect.";
                 options.disabled = Ship::Context::GetInstance()->GetAudio()->GetAvailableAudioBackends()->size() <= 1;
                 options.disabledTooltip = "Only one audio API is available on this platform.";
-                if (UIWidgets::Combobox("Audio API", &currentAudioBackend, audioBackendsMap, options)) {
+                if (UIWidgets::Combobox("Interfaz de audio", &currentAudioBackend, audioBackendsMap, options)) {
                     Ship::Context::GetInstance()->GetAudio()->SetCurrentAudioBackend(currentAudioBackend);
                 }
             } break;
@@ -352,8 +358,8 @@ void Menu::MenuDrawItem(WidgetInfo& widget, uint32_t width, UIWidgets::Colors me
                 options.tooltip = "Sets the renderer API used by the game.";
                 options.disabled = availableWindowBackends->size() <= 1;
                 options.disabledTooltip = "Only one renderer API is available on this platform.";
-                if (UIWidgets::Combobox("Renderer API (Needs reload)", &configWindowBackend, availableWindowBackendsMap,
-                                        options)) {
+                if (UIWidgets::Combobox("Interfaz de renderizado (requiere reinicio)", &configWindowBackend,
+                                        availableWindowBackendsMap, options)) {
                     Ship::Context::GetInstance()->GetConfig()->SetInt("Window.Backend.Id",
                                                                       (int32_t)(configWindowBackend));
                     Ship::Context::GetInstance()->GetConfig()->SetString("Window.Backend.Name",
@@ -654,7 +660,7 @@ void Menu::DrawElement() {
 
     ImGui::PushFont(OTRGlobals::Instance->fontStandardLargest);
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f, 8.0f));
-    std::string headerIndex = CVarGetString(headerCvar, "Settings");
+    std::string headerIndex = CVarGetString(headerCvar, SohGui::SohGuiStrings::SidebarSections::Settings);
     ImVec2 pos = window->DC.CursorPos;
     float centerX = pos.x + windowWidth / 2 - (style.ItemSpacing.x * (menuEntries.size() + 1));
     std::vector<ImVec2> headerSizes;
@@ -789,7 +795,7 @@ void Menu::DrawElement() {
         ;
     if (UIWidgets::Button(ICON_FA_UNDO, options2)) {
         std::reinterpret_pointer_cast<Ship::ConsoleWindow>(
-            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow("Console"))
+            Ship::Context::GetInstance()->GetWindow()->GetGui()->GetGuiWindow(SohGui::GuiWindowNames::ConsoleLookup))
             ->Dispatch("reset");
     }
     ImGui::SameLine();
