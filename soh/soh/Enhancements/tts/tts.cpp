@@ -17,6 +17,7 @@ extern "C" {
 extern MapData* gMapData;
 extern SaveContext gSaveContext;
 extern PlayState* gPlayState;
+void SpeechSynthesizerSpeak(const char* text, const char* languageCode);
 }
 
 typedef enum {
